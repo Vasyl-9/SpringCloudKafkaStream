@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "application.configs.invoice.count",
+      "type": "java.lang.String",
+      "description": "Description for application.configs.invoice.count."
+  }
+] }

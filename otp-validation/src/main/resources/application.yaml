@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        payment-in-0:
+          destination: payment_request
+        payment-in-1:
+          destination: payment_confirmation
+      kafka:
+        streams:
+          binder:
+            brokers: localhost:9092
+            configuration:
+              commit.interval.ms: 10000
+              state.dir: state-store
+              default:
+                key:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          bindings:
+            payment-in-0:
+              consumer:
+                timestampExtractorBeanName: requestTimeExtractor
+            payment-in-1:
+              consumer:
+                timestampExtractorBeanName: confirmationTimeExtractor
+
+

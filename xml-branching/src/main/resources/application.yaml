@@ -1,0 +1,34 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        process-in-0:
+          destination: xml-order-topic
+        process-out-0:
+          destination: india-orders
+        process-out-1:
+          destination: abroad-orders
+      kafka:
+        streams:
+          binder:
+            brokers: localhost:9092
+            configuration:
+              schema.registry.url: http://localhost:8081
+              processing.guarantee: exactly_once
+            deserialization-exception-handler: sendtodlq
+          bindings:
+            xml-input-channel:
+              consumer:
+                valueSerde: io.confluent.kafka.streams.serdes.json.KafkaJsonSchemaSerde
+                dlqName: error-topic
+            process-out-0:
+              producer:
+                valueSerde: io.confluent.kafka.streams.serdes.json.KafkaJsonSchemaSerde
+            process-out-1:
+              producer:
+                valueSerde: io.confluent.kafka.streams.serdes.json.KafkaJsonSchemaSerde
+
+
+application:
+  configs:
+    error.topic.name: error-topic
